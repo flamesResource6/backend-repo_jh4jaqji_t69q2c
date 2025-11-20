@@ -13,6 +13,7 @@ Model name is converted to lowercase for the collection name:
 
 from pydantic import BaseModel, Field
 from typing import Optional
+from datetime import datetime
 
 # Example schemas (replace with your own):
 
@@ -38,8 +39,17 @@ class Product(BaseModel):
     category: str = Field(..., description="Product category")
     in_stock: bool = Field(True, description="Whether product is in stock")
 
-# Add your own schemas here:
-# --------------------------------------------------
+# Typing test results schema
+class TypingResult(BaseModel):
+    """
+    Typing results for the mini game
+    Collection name: "typingresult"
+    """
+    wpm: float = Field(..., ge=0, description="Words per minute")
+    accuracy: float = Field(..., ge=0, le=100, description="Accuracy percentage 0-100")
+    mistakes: int = Field(..., ge=0, description="Total mistakes made during test")
+    duration: int = Field(..., ge=1, description="Test duration in seconds")
+    timestamp: Optional[datetime] = Field(default=None, description="Client-side timestamp when test completed")
 
 # Note: The Flames database viewer will automatically:
 # 1. Read these schemas from GET /schema endpoint
